@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=userroot
+      - MONGO_INITDB_ROOT_PASSWORD=passroot
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=userroot
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=passroot
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+  ftpd-server:
+    container_name: ftpd-server
+    image: stilliard/pure-ftpd:hardened
+    #network_mode: host
+    ports:
+      - '21:21'
+      - 30000-30009:30000-30009
+    volumes:
+      - './ftp/data:/home/username/'
+      - './ftp/pass:/etc/pure-ftpd/passwd'
+    environment:
+      PUBLICHOST: "localhost"
+      FTP_USER_NAME: "user"
+      FTP_USER_PASS: "pass"
+      FTP_USER_HOME: "/home/username"
+    restart: always
+volumes:
+  data: {}
+
+networks:
+  default:
+    name: mongodb_network
