@@ -25,7 +25,7 @@ There are **3 profiles** available to run the application:
 - **prod** (uses **real** FTP connector and **real** REST API client)
 
 To run application with prod profile execute:
-> mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=prod"
+> mvn spring-boot:run "-Dspring-boot.run.arguments=--spring.profiles.active=prod"
 
 If you run from IntelliJ IDEA – don't forget to specify the application profile in Run Configuration too ('prod' or 'dev')
 
